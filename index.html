@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui;
+            font-size: 0.9rem;
+        }
+
+        body {
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 4px;
+            border: solid black 1px;
+            border-radius: 20px;
+            padding: 12px;
+        }
+
+        input {
+            text-indent: 10px;
+        }
+
+        p {
+            color: red;
+            opacity: 0;
+            transition: 0.3s;
+        }
+    </style>
+    
+</head>
+
+<body>
+    <div>
+        <input type="text" placeholder="Nome de Usuário">
+        <input type="password" name="" id="" placeholder="Senha">
+        <button>Entrar</button>
+        <p>Usuário ou senha incorreto!</p>
+    </div>
+
+    <script>
+        const entrar = document.querySelector("button");
+        const user = document.querySelector("input[type=text]");
+        const password = document.querySelector("input[type=password]");
+        const wrong = document.querySelector("p");
+
+        function loginErrado() {
+            wrong.style.opacity = "1";
+            setTimeout(() => {
+                wrong.style.opacity = "0";
+            }, 1000);
+        }
+        function logar() {
+            if (!user.value || !password.value) {
+                loginErrado()
+                return;
+            }
+            fetch('/login', {
+                method: "post",
+                "Content-Type": "application/json",
+                body: JSON.stringify({
+                    user: user.value,
+                    password: password.value
+                })
+            }).then(response => response.json()).then(response =>
+                response ? location.assign("/conteudo.html") : loginErrado()
+            )
+        }
+        entrar.addEventListener("click", logar)
+
+    </script>
+</body>
+
+</html>
